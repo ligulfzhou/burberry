@@ -4,7 +4,7 @@ use crate::{
     action_submitter::ActionChannelSubmitter,
     types::{Collector, Executor, Strategy},
 };
-use eyre::Context;
+use anyhow::Context;
 use futures::StreamExt;
 use tokio::{
     sync::broadcast::{self, error::RecvError, Sender},

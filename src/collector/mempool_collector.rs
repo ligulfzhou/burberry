@@ -4,7 +4,7 @@ use crate::types::{Collector, CollectorStream};
 use alloy::transports::{RpcError, TransportErrorKind};
 use alloy::{primitives::B256, providers::Provider, rpc::types::eth::Transaction};
 use async_trait::async_trait;
-use eyre::WrapErr;
+use anyhow::WrapErr;
 use futures::prelude::{stream::FuturesUnordered, Stream};
 use futures::{FutureExt, StreamExt};
 use std::future::Future;
@@ -31,7 +31,7 @@ impl Collector<Transaction> for MempoolCollector {
         "MempoolCollector"
     }
 
-    async fn get_event_stream(&self) -> eyre::Result<CollectorStream<'_, Transaction>> {
+    async fn get_event_stream(&self) -> anyhow::Result<CollectorStream<'_, Transaction>> {
         let stream = self
             .provider
             .subscribe_pending_transactions()
