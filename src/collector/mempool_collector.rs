@@ -3,8 +3,8 @@ use std::sync::Arc;
 use crate::types::{Collector, CollectorStream};
 use alloy::transports::{RpcError, TransportErrorKind};
 use alloy::{primitives::B256, providers::Provider, rpc::types::eth::Transaction};
+use anyhow::Context as AnyhowContext;
 use async_trait::async_trait;
-use anyhow::WrapErr;
 use futures::prelude::{stream::FuturesUnordered, Stream};
 use futures::{FutureExt, StreamExt};
 use std::future::Future;
@@ -36,7 +36,7 @@ impl Collector<Transaction> for MempoolCollector {
             .provider
             .subscribe_pending_transactions()
             .await
-            .wrap_err("fail to subscribe to pending transaction stream")?
+            .with_context(|| "fail to subscribe to pending transaction stream")?
             .into_stream();
 
         let stream = TransactionStream::new(self.provider.as_ref(), stream, 256);

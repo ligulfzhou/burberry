@@ -141,7 +141,7 @@ where
             strategy
                 .sync_state(action_submitter.clone())
                 .await
-                .wrap_err("fail to sync state")?;
+                .with_context(|| "fail to sync state")?;
 
             set.spawn(async move {
                 debug!(name = strategy.name(), "starting strategy... ");
